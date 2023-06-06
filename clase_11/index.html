@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing PWA Notification</title>
+</head>
+<body>
+  <h1>Testing PWA Notification</h1>
+  <p id="token"></p>
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging.js";
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAvr06K6PBVb1sNTbUjVtQaKmatx62nrxo",
+      authDomain: "testing-pwa-notifications.firebaseapp.com",
+      projectId: "testing-pwa-notifications",
+      storageBucket: "testing-pwa-notifications.appspot.com",
+      messagingSenderId: "89315464248",
+      appId: "1:89315464248:web:2cff8a5dc05198265942cd"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    function initializeFirebaseNMessaging() {
+        Notification.requestPermission()
+          .then(function() {
+            console.log("Notification permission granted.");
+            // TODO(developer): Retrieve an Instance ID token for use with FCM.
+            return getToken(messaging, { vapidKey: 'AAAAFMud1Dg:APA91bFZ5RQcETsE8L0X7r1YhwiUr7cr6vmc6J3XeKWTk89HvGQSfUVr5sC9W5J-OenqYSLno5wyMZvXh8eECE6sCzAm0wGowSUDgeFwsr_a7nUIPpabLHLNGlFUEcmZYf5lRDblAcaJ' });
+          })
+          .then(function(token) {
+              // Displaying user token
+              console.log("Token: " + token);
+              document.getElementById("token").innerHTML = token;
+          })
+          .catch(function(err) {
+              console.log("Unable to get permission to notify.", err);
+          });
+    }
+
+    initializeFirebaseNMessaging();
+
+  </script>
+</body>
+</html>
