@@ -9,9 +9,10 @@
   <p id="token"></p>
 
   <script type="module">
-    // Import the functions you need from the SDKs you need
+
+      // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-messaging.js";
 
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
@@ -35,11 +36,10 @@
           .then(function() {
             console.log("Notification permission granted.");
             // TODO(developer): Retrieve an Instance ID token for use with FCM.
-            return getToken(messaging, { vapidKey: 'AAAAFMud1Dg:APA91bFZ5RQcETsE8L0X7r1YhwiUr7cr6vmc6J3XeKWTk89HvGQSfUVr5sC9W5J-OenqYSLno5wyMZvXh8eECE6sCzAm0wGowSUDgeFwsr_a7nUIPpabLHLNGlFUEcmZYf5lRDblAcaJ' });
+            return getToken(messaging, { vapidKey: 'BGFMG6CG5Y5ZAh3EjL-AfoIoABYAZdYKT1_e9jeV4pIf5s33XwQRSwza6yEMaqqf-y9hh-CzcVKC-bJE5ErXIsU' });
           })
           .then(function(token) {
               // Displaying user token
-              console.log("Token: " + token);
               document.getElementById("token").innerHTML = token;
           })
           .catch(function(err) {
@@ -48,6 +48,19 @@
     }
 
     initializeFirebaseNMessaging();
+
+      onMessage(messaging, function(payload) {
+          const notificationBody = {
+              body: payload.notification.body
+          }
+          if(Notification.permission == "granted") {
+              const notification = new Notification(payload.notification.title, notificationBody);
+              notification.onclick = function(e) {
+                  console.log(e);
+                  notification.close();
+              }
+          }
+      });
 
   </script>
 </body>
